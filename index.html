@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>Territory App</title>
+    <!-- 1. Load platform support before any code that touches the DOM. -->
+    <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+    <!-- 2. Load the component using an HTML Import -->
+    <link rel="import" href="bower_components/core-scaffold/core-scaffold.html">
+    <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
+    <link rel="import" href="bower_components/core-menu/core-menu.html">
+    <link rel="import" href="bower_components/core-icon/core-icon.html">
+    <link rel="import" href="bower_components/paper-item/paper-item.html">
+    <link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
+    <link rel="import" href="bower_components/core-animated-pages/transitions/slide-from-right.html">
+    <link rel="import" href="/bower_components/app-router/app-router.html">
+  <style>
+  </style>
+
+  </head>
+<body unresolved fullbleed>
+  <app-router>
+    <app-route path="/houses" import="/pages/houses-page.html"></app-route>
+    <app-route path="/houseview/:houseId" import="/pages/houseview-page.html"></app-route>
+    <app-route path="/housenew" import="/pages/housenew-page.html"></app-route>
+    <app-route path="/folders" import="/pages/folders-page.html"></app-route>
+    <app-route path="/foldernew" import="/pages/foldernew-page.html"></app-route>
+    <app-route path="/folderview/:folderCode" import="/pages/folderview-page.html"></app-route>
+    <app-route path="/tagnew/:folderCode" import="/pages/tagnew-page.html"></app-route>
+    <app-route path="/tagedit/:folderCode/:tagCode" import="/pages/tagedit-page.html"></app-route>
+    <app-route path="/towns" import="/pages/towns-page.html"></app-route>
+    <app-route path="/townnew" import="/pages/townnew-page.html"></app-route>
+    <app-route path="/townedit/:E" import="/pages/townedit-page.html"></app-route>
+    <app-route path="/users" import="/pages/users-page.html"></app-route>
+    <app-route path="/usernew" import="/pages/usernew-page.html"></app-route>
+    <app-route path="/useredit/:userId" import="/pages/useredit-page.html"></app-route>
+  </app-router>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/pages/sidebar-layout.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+
+<polymer-element name="tagnew-page">
+  <template>
+    <sidebar-layout selected="home">
+      <div class="title">New {{folderCode}}</div>
+      <p>
+      <paper-input value="{{tagCode}}" label="{{folderCode}}"></paper-input>
+      </p>
+      <paper-button on-click="{{cancel}}">Cancel</paper-button>
+      <paper-button raised on-click="{{ok}}">OK</paper-button>
+
+        <core-ajax id="okAjax" method="POST" url="/api/addTag?tenantId=1" body='{"folderCode":"{{data.folderCode}}", "tagCode":"{{tagCode}}"}' handleAs="json" on-core-response="{{success}}" on-core-error="{{error}}"></core-ajax>
+    </sidebar-layout>
+  </template>
+  <script>
+  	Polymer({
+  		handleResponse: function(evt, data) {
+  			console.log(data);
+  		},
+      ok: function(evt, d) {
+        this.$.okAjax.go();
+      },
+      cancel: function(evt, d) {
+        location.hash = "#/folderview/" + this.folderCode;
+      },
+      success: function(evt, d) {
+        location.hash = "#/folderview/" + this.folderCode;
+      },
+      error: function(evt, d) {
+        alert("error");
+      }
+  	});
+  </script>
+</polymer-element>

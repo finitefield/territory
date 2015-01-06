@@ -1,0 +1,62 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/pages/sidebar-layout.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="/bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="/bower_components/core-icon/core-icon.html">
+<link rel="import" href="/bower_components/core-icons/core-icons.html">
+
+<polymer-element name="folderview-page">
+  <template>
+  <style>
+    paper-fab#add {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+    }
+    paper-fab.mottomini {
+      height: 20px;
+      width: 20px;
+    }
+    core-icon {
+      cursor: pointer;
+    }
+  </style>
+    <sidebar-layout selected="home">
+      <div class="title">{{data.FolderCode}}</div>
+      <template repeat="{{t in data.Tags}}">
+        <li><a href="#/tagedit/{{data.FolderCode}}/{{t.TagCode}}">{{t.TagCode}}</a></li>
+        
+      </template>
+      <paper-fab id="add" icon="add" on-click="{{addClick}}"></paper-fab>
+
+	    <!-- <core-ajax auto method="POST" url="/api/getHouses" body='{"tenantId":"1"}' handleAs="json" on-core-response="{{handleResponse}}"></core-ajax>
+-->	    <core-ajax id="getFolderAjax" auto method="POST" url="/api/getFolder?tenantId=1" body='{"folderCode":"{{folderCode}}"}' handleAs="json" response="{{data}}"></core-ajax>
+        <core-ajax id="removeTagAjax" method="POST" url="/api/removeTag?tenantId=1" body='{"folderCode":"{{folderCode}}","tagCode":"{{tagCode}}"}' on-core-response="{{success}}" on-core-error="{{error}}"></core-ajax>
+
+    </sidebar-layout>
+  </template>
+  <script>
+  	Polymer({
+  		handleResponse: function(evt, d) {
+  			console.log(data);
+  		},
+      buttonClick: function(evt, d) {
+        alert("hello!" + evt.target.templateInstance.model.t.TagCode);
+      },
+      addClick: function() {
+        location.hash = "#/tagnew/" + this.data.FolderCode;
+      },
+      removeTag: function(evt, d) {
+        this.tagCode = evt.target.templateInstance.model.t.TagCode;
+        this.$.removeTagAjax.go();
+      },
+      success: function() {
+        console.log("success");
+        this.$.getFolderAjax.go();
+      },
+      error: function() {
+        alert('error!');
+      }
+  	});
+  </script>
+</polymer-element>

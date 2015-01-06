@@ -1,0 +1,36 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/pages/sidebar-layout.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+
+<polymer-element name="tagedit-page">
+  <template>
+    <sidebar-layout selected="folders">
+      <div class="title">Edit {{folderCode}}</div>
+      <h1>{{tagCode}}</h1>
+      <paper-button raised on-click="{{remove}}">Delete</paper-button>
+
+        <core-ajax id="removeAjax" method="POST" url="/api/removeTag?tenantId=1" body='{"folderCode":"{{folderCode}}", "tagCode":"{{tagCode}}"}' handleAs="json" on-core-response="{{success}}" on-core-error="{{error}}"></core-ajax>
+    </sidebar-layout>
+  </template>
+  <script>
+    Polymer({
+      handleResponse: function(evt, data) {
+        console.log(data);
+      },
+      remove: function(evt, d) {
+        this.$.removeAjax.go();
+      },
+      cancel: function(evt, d) {
+        location.hash = "#/folderview/" + this.folderCode;
+      },
+      success: function(evt, d) {
+        location.hash = "#/folderview/" + this.folderCode;
+      },
+      error: function(evt, d) {
+        alert("error");
+      }
+    });
+  </script>
+</polymer-element>

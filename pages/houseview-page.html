@@ -1,0 +1,37 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/pages/sidebar-layout.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="houseview-page">
+  <template>
+  <style>
+    paper-fab#add {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+    }
+  </style>
+    <sidebar-layout selected="home">
+      <div class="title">House View</div>
+      <template repeat="{{h in data}}">
+      	<a href="#/houseview/{{h.HouseId}}">
+        <div>
+          {{h.HouseId}} {{h.T}}{{h.C1}}-{{h.C2}}-{{h.C3}} {{h.AE}} {{h.R}} {{h.NE}}
+        </div>
+        <div>{{h.Memo}}</div>
+        </a>
+      </template>
+
+	    <!-- <core-ajax auto method="POST" url="/api/getHouses" body='{"tenantId":"1"}' handleAs="json" on-core-response="{{handleResponse}}"></core-ajax>
+-->	    <core-ajax auto method="POST" url="/api/getHouses?tenantId=1" body='{}' handleAs="json" response="{{data}}"></core-ajax>
+
+    </sidebar-layout>
+  </template>
+  <script>
+  	Polymer({
+  		handleResponse: function(evt, data) {
+  			console.log(data);
+  		}
+  	});
+  </script>
+</polymer-element>

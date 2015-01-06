@@ -1,0 +1,40 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/pages/sidebar-layout.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+
+<polymer-element name="townnew-page">
+  <template>
+    <sidebar-layout selected="towns">
+      <div class="title">New Town</div>
+      <p>
+      <paper-input value="{{E}}" label="Town (English)"></paper-input>
+      <paper-input value="{{J}}" label="Town (Japanese)"></paper-input>
+      </p>
+      <paper-button on-click="{{cancel}}">Cancel</paper-button>
+      <paper-button raised on-click="{{ok}}">OK</paper-button>
+
+        <core-ajax id="okAjax" method="POST" url="/api/addTown?tenantId=1" body='{"E":"{{E}}", "J":"{{J}}"}' handleAs="json" on-core-response="{{success}}" on-core-error="{{error}}"></core-ajax>
+    </sidebar-layout>
+  </template>
+  <script>
+    Polymer({
+      handleResponse: function(evt, data) {
+        console.log(data);
+      },
+      ok: function(evt, d) {
+        this.$.okAjax.go();
+      },
+      cancel: function(evt, d) {
+        location.hash = "#/towns";
+      },
+      success: function(evt, d) {
+        location.hash = "#/towns";
+      },
+      error: function(evt, d) {
+        alert("error");
+      }
+    });
+  </script>
+</polymer-element>

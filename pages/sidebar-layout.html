@@ -1,0 +1,26 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-scaffold/core-scaffold.html">
+<link rel="import" href="/bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="/bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="/bower_components/core-item/core-item.html">
+
+<polymer-element name="sidebar-layout" attributes="selected" noscript>
+  <template>
+    <link rel="stylesheet" href="sidebar-layout.css">
+    <core-scaffold>
+      <core-header-panel navigation flex mode="seamed">
+        <core-toolbar>Territory App</core-toolbar>
+        <core-item icon="home" label="Houses" active?="{{selected == 'houses'}}"><a href="/index.html#/houses"></a></core-item>
+        <core-item icon="folder" label="Folders" active?="{{selected == 'folders'}}"><a href="/index.html#/folders"></a></core-item>
+        <core-item icon="room" label="Towns" active?="{{selected == 'towns'}}"><a href="/index.html#/towns"></a></core-item>
+        <core-item icon="account-circle" label="Users" active?="{{selected == 'users'}}"><a href="/index.html#/users"></a></core-item>
+      </core-header-panel>
+      <div tool>
+        <content select=".title"></content>
+      </div>
+      <div class="content">
+        <content></content>
+      </div>
+    </core-scaffold>
+  </template>
+</polymer-element>

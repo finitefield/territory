@@ -1,0 +1,21 @@
+application: housemanager
+version: 1
+runtime: go
+api_version: go1
+
+handlers:
+- url: /bower_components
+  static_dir: bower_components
+
+- url: /elements
+  static_dir: elements
+
+- url: /pages
+  static_dir: pages
+
+- url: /index.html
+  static_files: index.html
+  upload: index.html
+
+- url: /.*
+  script: _go_app

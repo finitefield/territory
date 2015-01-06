@@ -1,0 +1,54 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/pages/sidebar-layout.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="/bower_components/core-selector/core-selector.html">
+
+<polymer-element name="usernew-page">
+  <template>
+      <style>
+        .auth:hover {
+          cursor: pointer;
+        }
+        .core-selected:after {
+          content: "\2713";
+        }
+      </style>
+    <sidebar-layout selected="users">
+      <div class="title">New User</div>
+      <paper-input value="{{userId}}" label="Email"></paper-input>
+      <paper-input value="{{userName}}" label="Name"></paper-input>
+      <core-selector class="auth" selected="{{authority}}">
+        <div>Editor</div>
+        <div>Viewer</div>
+      </core-selector>
+      <paper-button on-click="{{cancel}}">Cancel</paper-button>
+      <paper-button raised on-click="{{ok}}">OK</paper-button>
+
+        <core-ajax id="okAjax" method="POST" url="/api/addTag?tenantId=1" body='{"userId":"{{userId}}", "userName":"{{userName}}", "authority":"{{authority}}"}' handleAs="json" on-core-response="{{success}}" on-core-error="{{error}}"></core-ajax>
+    </sidebar-layout>
+  </template>
+  <script>
+  	Polymer({
+      ready: function() {
+        this.authority = 0;
+      },
+  		handleResponse: function(evt, data) {
+  			console.log(data);
+  		},
+      ok: function(evt, d) {
+        this.$.okAjax.go();
+      },
+      cancel: function(evt, d) {
+        location.hash = "#/users";
+      },
+      success: function(evt, d) {
+        location.hash = "#/users";
+      },
+      error: function(evt, d) {
+        alert("error");
+      }
+  	});
+  </script>
+</polymer-element>

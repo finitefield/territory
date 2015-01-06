@@ -1,0 +1,49 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/pages/sidebar-layout.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="/bower_components/core-label/core-label.html">
+<link rel="import" href="/bower_components/core-icons/core-icons.html">
+
+<polymer-element name="townedit-page">
+  <template>
+    <sidebar-layout selected="home">
+      <div class="title">Edit Town</div>
+      <p>
+      <core-label>{{E}}</core-label>
+      <paper-input value="{{J}}" label="Town (Japanese)"></paper-input>
+      </p>
+      <paper-button on-click="{{cancel}}">Cancel</paper-button>
+      <paper-button raised on-click="{{ok}}">OK</paper-button>
+      <paper-button on-click="{{remove}}"><core-icon icon="clear"></core-icon>Delete</paper-button>
+
+        <core-ajax id="okAjax" method="POST" url="/api/updateTown?tenantId=1" body='{"E":"{{E}}", "J":"{{J}}"}' handleAs="json" on-core-response="{{success}}" on-core-error="{{error}}"></core-ajax>
+        <core-ajax id="removeAjax" method="POST" url="/api/removeTown?tenantId=1" body='{"E":"{{E}}"}' handleAs="json" on-core-response="{{success}}" on-core-error="{{error}}"></core-ajax>
+    </sidebar-layout>
+  </template>
+  <script>
+    Polymer({
+      handleResponse: function(evt, data) {
+        console.log(data);
+      },
+      ok: function(evt, d) {
+        this.$.okAjax.go();
+      },
+      remove: function(evt, d) {
+        if (confirm('Is it OK to delete this town?')) {
+          this.$.removeAjax.go();
+        }
+      },
+      cancel: function(evt, d) {
+        location.hash = "#/towns";
+      },
+      success: function(evt, d) {
+        location.hash = "#/towns";
+      },
+      error: function(evt, d) {
+        alert("error");
+      }
+    });
+  </script>
+</polymer-element>

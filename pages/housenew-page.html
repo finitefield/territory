@@ -1,0 +1,74 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/pages/sidebar-layout.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="/bower_components/core-menu/core-menu.html">
+<link rel="import" href="/bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+
+<polymer-element name="housenew-page">
+  <template>
+    <sidebar-layout selected="houses">
+      <div class="title">New House</div>
+      <div>
+      Town
+      <paper-menu-button>
+        <paper-icon-button icon="menu" noink></paper-icon-button>
+        <paper-dropdown class="dropdown">
+          <core-menu class="menu" valueattr="label" selected="{{T}}">
+            <template repeat="{{t in meta.Towns}}">
+              <paper-item label="{{t.E}}">{{t.E}} : {{t.J}}</paper-item>
+            </template>
+          </core-menu>
+        </paper-dropdown>
+      </paper-menu-button>{{T}}
+      </div>
+      <paper-input label="Chome"></paper-input>-<paper-input label="Ban"></paper-input>-<paper-input label="Go"></paper-input>
+      <paper-input label="Apartment (English)"></paper-input>
+      <paper-input label="Apartment (Japanese)"></paper-input>
+      <paper-input label="Room Number"></paper-input>
+      <div>
+      Memo
+      <textarea value="{{Memo}}"></textarea>
+      </div>
+      <template repeat="{{f in meta.Folders}}">
+      <div>
+        {{f.FolderCode}}
+        <template if="{{f.FolderType == 'Input'}}">
+          <paper-input value="{{tags[f.FolderCode]}}"></paper-input>
+        </template>
+        <template if="{{f.FolderType == 'Textarea'}}">
+          <textarea value="{{tags[f.FolderCode]}}"></textarea>
+        </template>
+        <template if="{{f.FolderType == 'Select'}}">
+          <paper-menu-button>
+            <paper-icon-button icon="menu" noink></paper-icon-button>
+            <paper-dropdown class="dropdown">
+              <core-menu class="menu" valueattr="label" selected="{{tags[f.FolderCode]}}">
+                <template repeat="{{t in f.Tags}}">
+                  <paper-item label="{{t.TagCode}}">{{t.TagCode}}</paper-item>
+                </template>
+              </core-menu>
+            </paper-dropdown>
+          </paper-menu-button>{{tags[f.FolderCode]}}
+        </template>
+      </div>
+      </template>
+
+ 	    <core-ajax auto method="POST" url="/api/getMeta?tenantId=1" body='{}' handleAs="json" response="{{meta}}"></core-ajax>
+
+    </sidebar-layout>
+  </template>
+  <script>
+  	Polymer({
+      ready: function() {
+        this.tags = {};
+      },
+  		handleResponse: function(evt, data) {
+  			console.log(data);
+  		}
+  	});
+  </script>
+</polymer-element>

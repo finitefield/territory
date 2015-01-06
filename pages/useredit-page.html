@@ -1,0 +1,58 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/pages/sidebar-layout.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="/bower_components/core-selector/core-selector.html">
+
+<polymer-element name="useredit-page">
+  <template>
+      <style>
+        .auth:hover {
+          cursor: pointer;
+        }
+        .core-selected:after {
+          content: "\2713";
+        }
+      </style>
+    <sidebar-layout selected="users">
+      <div class="title">Edit {{userId}}</div>
+      <paper-input value="{{data.UserName}}" label="User Name"></paper-input>
+      <core-selector class="auth" selected="{{data.Authority}}">
+        <div>Viewer</div>
+        <div>Editor</div>
+      </core-selector>
+      <paper-button on-click="{{cancel}}">Cancel</paper-button>
+      <paper-button raised on-click="{{ok}}">OK</paper-button>
+      <paper-button on-click="{{remove}}">Delete<paper-button>
+
+        <core-ajax auto method="POST" url="/api/getUser?tenantId=1" body='{"userId": "{{userId}}"}' handleAs="json" response="{{data}}"></core-ajax>
+        <core-ajax id="okAjax" method="POST" url="/api/updateUser?tenantId=1" body='{"userId": "{{userId}}", "userName":"{{data.userName}}", "authority":{{authority}} }' handleAs="json" on-core-response="{{success}}" on-core-error="{{error}}"></core-ajax>
+        <core-ajax id="removeAjax" method="POST" url="/api/removeUser?tenantId=1" body='{"userId": "{{userId}}"}' handleAs="json" on-core-response="{{success}}" on-core-error="{{error}}"></core-ajax>
+    </sidebar-layout>
+  </template>
+  <script>
+  	Polymer({
+  		handleResponse: function(evt, data) {
+  			console.log(data);
+  		},
+      ok: function(evt, d) {
+        this.$.okAjax.go();
+      },
+      remove: function(evt, d) {
+        if (confirm('Is it OK to delete this user?')) {
+          this.$.removeAjax.go();
+        }
+      },
+      cancel: function(evt, d) {
+        location.hash = "#/users";
+      },
+      success: function(evt, d) {
+        location.hash = "#/users";
+      },
+      error: function(evt, d) {
+        alert("error");
+      }
+  	});
+  </script>
+</polymer-element>
